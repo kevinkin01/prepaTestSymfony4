@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 // use entity sections.php
 use App\Entity\Sections;
+// use entity articles.php
+use App\Entity\Articles;
 
 class PublicController extends AbstractController
 {
@@ -17,8 +19,11 @@ class PublicController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         //get all section in DB
         $rub = $entityManager->getRepository(Sections::class)->findAll();
+        // get all articles in DB
+        $art = $entityManager->getRepository(Articles::class)->findAll();
         return $this->render('public/index.html.twig', [
             'Sections' => $rub,
+            'Articles' => $art,
         ]);
     }
 }
