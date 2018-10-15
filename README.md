@@ -19,3 +19,6 @@
 - real export in localhost (see /datas/export1-structure.sql)
 ### step 5 change .env
 >DATABASE_URL=mysql://root:@127.0.0.1:3306/prepatestsymfony4
+
+### step 6 create mapping database
+> php bin/console doctrine:mapping:import 'App\Entity' annotation --path=src/Entity 
