@@ -18,20 +18,43 @@
 - export diagram to image: /datas/diagram.png
 - real export in localhost (see /datas/export1-structure.sql)
 ### step 5 change .env
->DATABASE_URL=mysql://root:@127.0.0.1:3306/prepatestsymfony4
-
+change .env
+> DATABASE_URL=mysql://root:@127.0.0.1:3306/prepatestsymfony4
 ### step 6 create mapping database
 > php bin/console doctrine:mapping:import 'App\Entity' annotation --path=src/Entity 
-
-### step 7 create setters and getters
-php bin/console make:entity App\Entity --regenerate
-
-### step 8 create Controllers
->php bin/console make:controller Publ
- icController
- 
+### step 7 create setters and getters for entities
+> php bin/console make:entity App\Entity --regenerate
+### step 8 create PublicController
+> php bin/console make:controller PublicController
 ### step 9 change routing
+to the root in annotation
 > "/", name="accueil"
+### step 10 install bootstrap 4 CDN
+- CDN in base.html.twig
+### step 11 choose a theme
+Free bootstrap basic themes: https://startbootstrap.com/
+- I choose:  https://startbootstrap.com/template-overviews/bare/
+- we make a good general template.html.twig with bootstrap end block
+### step 12 export datas
+export dats in datas/export2-datas.sql
+### step 13: menu
+in front of PublicController.php
+                       
+    use App\Entity\Sections;
+in index method
 
-### step 10 install css and js bootstrap 4 CDN
-- CDN in base.html.twg
+    // get Doctrine Manager for all entities
+    $entityManager = $this->getDoctrine()->getManager();
+    // get all sections in db
+    $rub = $entityManager->getRepository(Sections::class)->findAll();
+    return $this->render('public/index.html.twig', [
+    'sections' => $rub,
+    ]);
+in index.html.twig
+                    
+    {% for itemMenu in sections %}
+    <li class="nav-item">
+        <a class="nav-link" href="./section/
+        {{ itemMenu.getIdsections }}">{{ itemMenu.getThetitled }}</a>
+    </li>
+            {% endfor %}
