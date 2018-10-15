@@ -22,3 +22,7 @@
 
 ### step 6 create mapping database
 > php bin/console doctrine:mapping:import 'App\Entity' annotation --path=src/Entity 
+
+### step 7 create Controllers
+>php bin/console make:controller Publ
+ icController
