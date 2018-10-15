@@ -31,4 +31,7 @@ php bin/console make:entity App\Entity --regenerate
  icController
  
 ### step 9 change routing
-> "/", name="accueil" 
+> "/", name="accueil"
+
+### step 10 install css and js bootstrap 4 CDN
+- CDN in base.html.twg
