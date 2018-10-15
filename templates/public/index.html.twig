@@ -12,7 +12,7 @@
         </li>
         {% for itemMenu in Sections %}
         <li class="nav-item">
-            <a class="nav-link" href="./section/>{{ itemMenu.getThetilteld }}</a>
+            <a class="nav-link" href="./section/{{ itemMenu.getIdsections}}">{{ itemMenu.getThetilteld }}</a>
         </li>
         {% endfor %}
     </ul>
@@ -22,5 +22,15 @@
 {% endblock %}
 
 
-{% block contenu %}{% endblock %}
+{% block contenu %}
+    {% for item in Articles %}
+        <h2>{{ item.getThetitle }}</h2>
+        <h3> {% for categ in item.getSectionssections %}
+            {{ categ.getThetilteld }}
+            {% endfor %}
+        </h3>
+        <p>{{ item.getThetext|slice(0,350) }} ...</p>
+        <h4>par {{ item.getUsersusers.getTherealname }} le {{ item.getThedate |date("d/m/Y à H \\h i \\m") }}</h4><hr>
+    {% endfor %}
+{% endblock %}
 
