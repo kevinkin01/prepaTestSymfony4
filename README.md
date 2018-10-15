@@ -23,6 +23,12 @@
 ### step 6 create mapping database
 > php bin/console doctrine:mapping:import 'App\Entity' annotation --path=src/Entity 
 
-### step 7 create Controllers
+### step 7 create setters and getters
+php bin/console make:entity App\Entity --regenerate
+
+### step 8 create Controllers
 >php bin/console make:controller Publ
  icController
+ 
+### step 9 change routing
+> "/", name="accueil" 
