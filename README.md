@@ -79,7 +79,6 @@ in index.html.twig
             'sections' => $rub,
             'articles' => $art,
         ]);  
-                
 ### step 15 - display all articles on index.html.twig
 - no difference for the fields into Articles
 - automatical INNER JOIN or new query when we make the link one to many or many to many
@@ -95,4 +94,102 @@ in index.html.twig
             <h4>Par {{ item.getUsersusers.getTherealname }} 
             le {{ item.getThedate|date("d/m/Y à H \\h i \\m") }}</h4><hr>
         {% endfor %} 
-                         
+### step 16 - divise entete in two parts
+
+    {% block entete_haut %}
+            <!-- Navigation -->
+            <nav class="navbar navbar-expand-lg navbar-dark
+             bg-dark static-top">
+            <div class="container">
+            <a class="navbar-brand" href="{{ path("accueil") }}"
+            >NosActus.be</a>
+            <button class="navbar-toggler" type="button" 
+            data-toggle="collapse" data-target="#navbarResponsive" 
+            aria-controls="navbarResponsive" aria-expanded="false"
+             aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+        {% endblock %}             
+        {% block menu %}....{% endblock %}
+       {% block entete_bas %}
+           </div>
+           </div>
+           </nav>
+       {% endblock %} 
+###  017 install twig extensions for use truncate     
+    composer require twig/extensions
+ after in config/packages/twig_extensions, decomment Twig\Extensions\TextExtension:
+    
+    services:
+        _defaults:
+            public: false
+            autowire: true
+            autoconfigure: true
+    
+        # Uncomment any lines below to activate 
+        that Twig extension
+        #Twig\Extensions\ArrayExtension: ~
+        #Twig\Extensions\DateExtension: ~
+        #Twig\Extensions\IntlExtension: ~
+        Twig\Extensions\TextExtension: ~
+ use truncate in index.html.twig
+    
+    <p>{{ item.getThetext|truncate(350,true) }}</p>
+ ###  018 create the one article system
+ - PublicController.php
+    
+    /**
+         *
+         * Matches /article/{id},
+         * {id} is a requirement digit: "\d+" for more security
+         * to view an article's detail
+         *
+         * @Route("/article/{id}", name="detail_article", requirements={"id"="\d+"})
+         */
+        public function oneArticle($id){
+            // get Doctrine Manager for all entities
+            $entityManager = $this->getDoctrine()->getManager();
+    
+            // get all sections in db for menu
+            $rub = $entityManager->getRepository(Sections::class)->findAll();
+    
+            // get one article by its "id" from db
+            $art = $entityManager->getRepository(Articles::class)->find($id);
+    
+            // return the Twig's view with 2 arguments
+            return $this->render('public/one_article.html.twig', [
+                'sections' => $rub,
+                'articles' => $art,
+            ]);
+        }  
+- create templates/public/one_article.html.twig
+ 
+  ###  019 create link's dynamique with path
+    
+        {{ path("detail_article",{'id': item.getIdarticles}) }}   
+    
+  ### 020 create Sections system
+  - create oneSection($id) in PublicContraller
+  - "if" in twig for active menu, create variable with "set"
+  - change the link to dynamique
+  - create the good many2many's relation:
+    
+        // get Doctrine Manager for all entities
+                $entityManager = $this->getDoctrine()->getManager();
+        
+                // get all sections in db for menu
+                $rub = $entityManager->getRepository(Sections::class)->findAll();
+        
+                // get one section by its "id" from db
+                $section = $entityManager->getRepository(Sections::class)->find($id);
+        
+                // get all articles by one section
+                $art = $section->getArticlesarticles();
+        
+                // return the Twig's view with 2 arguments
+                return $this->render('public/one_section.html.twig', [
+                    'sections' => $rub,
+                    'section' => $section,
+                    'articles' => $art,
+                ]);   
